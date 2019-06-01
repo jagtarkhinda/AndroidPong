@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.constraint.solver.widgets.Rectangle;
 import android.util.Log;
@@ -44,7 +45,6 @@ public class GameEngine extends SurfaceView implements Runnable {
     Paint paintbrush;
 
 
-
     // -----------------------------------
     // ## GAME SPECIFIC VARIABLES
     // -----------------------------------
@@ -52,6 +52,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     // ----------------------------
     // ## SPRITES
     // ----------------------------
+    Point ballPosition; // point represents the (x,y) position of an item (ball)
 
     // ----------------------------
     // ## GAME STATS - number of lives, score, etc
@@ -70,6 +71,13 @@ public class GameEngine extends SurfaceView implements Runnable {
 
 
         this.printScreenInfo();
+
+        //setting the initial position of ball to center of screen
+        ballPosition = new Point();  //initializing the ballPosition point
+        ballPosition.x = screenWidth/2;
+        ballPosition.y = screenHeight/2;
+
+
 
         // @TODO: Add your sprites to this section
         // This is optional. Use it to:
@@ -149,6 +157,14 @@ public class GameEngine extends SurfaceView implements Runnable {
 
 
             //@TODO: Draw the sprites (rectangle, circle, etc)
+
+            //Drawing a ball as rectangle. We need 4 coordinates to draw the rectangle.
+            int left = ballPosition.x;
+            int top = ballPosition.y;
+            int right = ballPosition.x + 45;  // ball is 45 px in width
+            int bottom = ballPosition.y + 45; // ball is 45 px in height
+
+            canvas.drawRect(left,top,right,bottom,paintbrush);
 
             //@TODO: Draw game statistics (lives, score, etc)
             paintbrush.setTextSize(60);
