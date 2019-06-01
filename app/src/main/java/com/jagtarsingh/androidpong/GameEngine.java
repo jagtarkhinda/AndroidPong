@@ -154,14 +154,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     public void updatePositions() {
         // @TODO: Update the position of the sprites
 
-            //code to make the ball move top top or bottom depending on boolean variable
-//            if(ballMovingDown == true)
-//            {
-//                ballPosition.y += BALL_SPEED; // moving ball 50px every frame
-//            }
-//            else if (ballMovingDown == false) {
-//                ballPosition.y -= BALL_SPEED;
-//            }
+
 
             //code to make the ball move up when it hits racket
             if(ballTouchingRacket == true)
