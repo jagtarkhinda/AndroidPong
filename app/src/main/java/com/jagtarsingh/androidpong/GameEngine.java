@@ -59,6 +59,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     final int RACKET_WIDTH = 100;
     final int RACKET_HEIGHT = 25;
     final int DISTANCE_FROM_WALL = 300;
+    final int RACKET_SPEED = 50;
     // ----------------------------
     // ## GAME STATS - number of lives, score, etc
     // ----------------------------
@@ -237,6 +238,14 @@ public class GameEngine extends SurfaceView implements Runnable {
         //@TODO: What should happen when person touches the screen?
         if (userAction == MotionEvent.ACTION_DOWN) {
             // user pushed down on screen
+            //code to to move racket left and right when user tap left or right of screen
+            if(event.getX() < screenWidth/2 && (racketPosition.x  > 0)) //also checking if racket position reaches corner
+            {
+                racketPosition.x -= RACKET_SPEED;
+            }else if (event.getX() > screenWidth/2 && (racketPosition.x+RACKET_WIDTH*2) < screenWidth)
+            {
+                racketPosition.x += RACKET_SPEED;
+            }
         }
         else if (userAction == MotionEvent.ACTION_UP) {
             // user lifted their finger
