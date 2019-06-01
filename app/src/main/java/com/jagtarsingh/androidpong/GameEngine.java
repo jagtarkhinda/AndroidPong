@@ -53,7 +53,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     // ## SPRITES
     // ----------------------------
     Point ballPosition; // point represents the (x,y) position of an item (ball)
-
+    final int BALL_WIDTH = 45;
     // ----------------------------
     // ## GAME STATS - number of lives, score, etc
     // ----------------------------
@@ -161,8 +161,8 @@ public class GameEngine extends SurfaceView implements Runnable {
             //Drawing a ball as rectangle. We need 4 coordinates to draw the rectangle.
             int left = ballPosition.x;
             int top = ballPosition.y;
-            int right = ballPosition.x + 45;  // ball is 45 px in width
-            int bottom = ballPosition.y + 45; // ball is 45 px in height
+            int right = ballPosition.x + BALL_WIDTH;  // ball is 45 px in width
+            int bottom = ballPosition.y + BALL_WIDTH; // ball is 45 px in height
 
             canvas.drawRect(left,top,right,bottom,paintbrush);
 
