@@ -149,33 +149,52 @@ public class GameEngine extends SurfaceView implements Runnable {
     // ------------------------------
         //setting a variable to keep track of ball movement
         boolean ballMovingDown = true;
+        boolean ballTouchingRacket = false;
     // 1. Tell Android the (x,y) positions of your sprites
     public void updatePositions() {
         // @TODO: Update the position of the sprites
 
             //code to make the ball move top top or bottom depending on boolean variable
-            if(ballMovingDown == true)
+//            if(ballMovingDown == true)
+//            {
+//                ballPosition.y += BALL_SPEED; // moving ball 50px every frame
+//            }
+//            else if (ballMovingDown == false) {
+//                ballPosition.y -= BALL_SPEED;
+//            }
+
+            //code to make the ball move up when it hits racket
+            if(ballTouchingRacket == true)
             {
-                ballPosition.y += BALL_SPEED; // moving ball 50px every frame
+                ballPosition.y -= BALL_SPEED; // moving ball 50px every frame
             }
-            else {
-                ballPosition.y -= BALL_SPEED;
+            else if(ballTouchingRacket == false)
+            {
+                ballPosition.y +=BALL_SPEED;
             }
+
 
 
         // @TODO: Collision detection code
 
         //code to detect when ball reaches the screen bottom or top to stop ball from going down further
             if(ballPosition.y > screenHeight){ //ball reaches bottom of screen
-                ballMovingDown = false;  //change the boolean
+                ballTouchingRacket = true;  //change the boolean
                 score +=1; //increase score when ball touches bottom
             }
             else if(ballPosition.y < 0) //ball reaches top of screen
             {
-                ballMovingDown = true; //change boolean
+                ballTouchingRacket = false;
                 score += 1; //increase score when ball touches top
             }
 
+            //code to detect when ball hits the racket
+            if(((ballPosition.y + BALL_WIDTH) > (racketPosition.y)) && ((ballPosition.y + BALL_WIDTH) < (racketPosition.y + RACKET_HEIGHT*2) )) {
+                if ((ballPosition.x + BALL_WIDTH) > (racketPosition.x) && (ballPosition.x + BALL_WIDTH) < (racketPosition.x + RACKET_WIDTH*2)) {
+                    Log.d("Collision", "Touch");
+                    ballTouchingRacket = true;
+                }
+            }
     }
 
     // 2. Tell Android to DRAW the sprites at their positions
