@@ -135,7 +135,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     // GAME ENGINE FUNCTIONS
     // - update, draw, setFPS
     // ------------------------------
-        //setting a variable to keep track ball movement
+        //setting a variable to keep track of ball movement
         boolean ballMovingDown = true;
     // 1. Tell Android the (x,y) positions of your sprites
     public void updatePositions() {
@@ -153,7 +153,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
         // @TODO: Collision detection code
 
-        //code to detect when ball reaches the screen bottom to stop ball from going down further
+        //code to detect when ball reaches the screen bottom or top to stop ball from going down further
             if(ballPosition.y > screenHeight){
                 ballMovingDown = false;
             }
