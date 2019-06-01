@@ -141,7 +141,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     public void updatePositions() {
         // @TODO: Update the position of the sprites
 
-            //code to make the ball bounce from top and bottom of screen
+            //code to make the ball move top top or bottom depending on boolean variable
             if(ballMovingDown == true)
             {
                 ballPosition.y += 50; // moving ball 50px every frame
@@ -154,12 +154,12 @@ public class GameEngine extends SurfaceView implements Runnable {
         // @TODO: Collision detection code
 
         //code to detect when ball reaches the screen bottom or top to stop ball from going down further
-            if(ballPosition.y > screenHeight){
-                ballMovingDown = false;
+            if(ballPosition.y > screenHeight){ //ball reaches bottom of screen
+                ballMovingDown = false;  //change the boolean
             }
-            else if(ballPosition.y < 0)
+            else if(ballPosition.y < 0) //ball reaches top of screen
             {
-                ballMovingDown = true;
+                ballMovingDown = true; //change boolean
             }
 
     }
