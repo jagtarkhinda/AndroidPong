@@ -54,6 +54,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     // ----------------------------
     Point ballPosition; // point represents the (x,y) position of an item (ball)
     final int BALL_WIDTH = 45;
+    final int BALL_SPEED = 50;
     // ----------------------------
     // ## GAME STATS - number of lives, score, etc
     // ----------------------------
@@ -134,12 +135,32 @@ public class GameEngine extends SurfaceView implements Runnable {
     // GAME ENGINE FUNCTIONS
     // - update, draw, setFPS
     // ------------------------------
-
+        //setting a variable to keep track ball movement
+        boolean ballMovingDown = true;
     // 1. Tell Android the (x,y) positions of your sprites
     public void updatePositions() {
         // @TODO: Update the position of the sprites
 
+            //code to make the ball bounce from top and bottom of screen
+            if(ballMovingDown == true)
+            {
+                ballPosition.y += 50; // moving ball 50px every frame
+            }
+            else {
+                ballPosition.y -=50;
+            }
+
+
         // @TODO: Collision detection code
+
+        //code to detect when ball reaches the screen bottom to stop ball from going down further
+            if(ballPosition.y > screenHeight){
+                ballMovingDown = false;
+            }
+            else if(ballPosition.y < 0)
+            {
+                ballMovingDown = true;
+            }
 
     }
 
