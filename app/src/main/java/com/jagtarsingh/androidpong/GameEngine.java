@@ -54,6 +54,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     // ----------------------------
     Point ballPosition; // point represents the (x,y) position of an item (ball)
     Point racketPosition; // racket (x,y) position
+    Point autoRacket;
     final int BALL_WIDTH = 45;
     final int BALL_SPEED = 50;
     final int RACKET_WIDTH = 100;
@@ -96,6 +97,11 @@ public class GameEngine extends SurfaceView implements Runnable {
         racketPosition = new Point();
         racketPosition.x = (screenWidth/2 - RACKET_WIDTH);
         racketPosition.y = (screenHeight - (DISTANCE_FROM_WALL + RACKET_HEIGHT));
+
+        //setting the initial position of auto racket to top center
+        autoRacket = new Point();
+        autoRacket.x = (screenWidth/2 - RACKET_WIDTH);
+        autoRacket.y = (DISTANCE_FROM_WALL);
 
 
         // @TODO: Any other game setup stuff goes here
@@ -148,15 +154,22 @@ public class GameEngine extends SurfaceView implements Runnable {
     // - update, draw, setFPS
     // ------------------------------
         //setting a variable to keep track of ball movement
-        boolean ballMovingDown = true;
         boolean ballTouchingRacket = false;
+        boolean autoRacketMove = true;
     // 1. Tell Android the (x,y) positions of your sprites
     public void updatePositions() {
         // @TODO: Update the position of the sprites
 
 
+            if(autoRacketMove == true)
+            {
+                autoRacket.x += RACKET_SPEED;
+            }
+            else if (autoRacketMove == false){
+                autoRacket.x -= RACKET_SPEED;
+            }
 
-            //code to make the ball move up when it hits racket
+            //code to make the ball move up when it hits racket ..
             if(ballTouchingRacket == true)
             {
                 ballPosition.y -= BALL_SPEED; // moving ball 50px every frame
@@ -173,21 +186,39 @@ public class GameEngine extends SurfaceView implements Runnable {
         //code to detect when ball reaches the screen bottom or top to stop ball from going down further
             if(ballPosition.y > screenHeight){ //ball reaches bottom of screen
                 ballTouchingRacket = true;  //change the boolean
-                score +=1; //increase score when ball touches bottom
+
             }
             else if(ballPosition.y < 0) //ball reaches top of screen
             {
                 ballTouchingRacket = false;
-                score += 1; //increase score when ball touches top
+
             }
+            //checking if auto racket is thoching the corners
+            if(autoRacket.x < 0)
+            {
+                autoRacketMove = true;
+            }
+            else if((autoRacket.x + RACKET_WIDTH*2) > screenWidth){
+                autoRacketMove = false;
+        }
 
             //code to detect when ball hits the racket
             if(((ballPosition.y + BALL_WIDTH) > (racketPosition.y)) && ((ballPosition.y + BALL_WIDTH) < (racketPosition.y + RACKET_HEIGHT*2) )) {
                 if ((ballPosition.x + BALL_WIDTH) > (racketPosition.x) && (ballPosition.x + BALL_WIDTH) < (racketPosition.x + RACKET_WIDTH*2)) {
                     Log.d("Collision", "Touch");
                     ballTouchingRacket = true;
+                    score += 1;  //increase score when ball hits the racket
                 }
             }
+
+        //code to detect when ball hits the auto racket
+        if(((ballPosition.y) <= (autoRacket.y + RACKET_HEIGHT*2)) && ((ballPosition.y) > (autoRacket.y) )) {
+            if ((ballPosition.x) >= (autoRacket.x) && (ballPosition.x + BALL_WIDTH) < (autoRacket.x + RACKET_WIDTH*2)) {
+                Log.d("Collision", "Touch");
+                ballTouchingRacket = false;
+                score += 1;  //increase score when ball hits the racket
+            }
+        }
     }
 
     // 2. Tell Android to DRAW the sprites at their positions
@@ -220,6 +251,14 @@ public class GameEngine extends SurfaceView implements Runnable {
             int racbottom = ractop + RACKET_HEIGHT*2;
 
             canvas.drawRect(racleft,ractop,racright,racbottom,paintbrush);
+
+            //Drawing an auto racket as rectangle. We need 4 coordinates.
+            int autoracleft = autoRacket.x;
+            int autoractop = autoRacket.y;
+            int autoracright = autoracleft + RACKET_WIDTH*2;
+            int autoracbottom = autoractop + RACKET_HEIGHT*2;
+
+            canvas.drawRect(autoracleft,autoractop,autoracright,autoracbottom,paintbrush);
 
             //@TODO: Draw game statistics (lives, score, etc)
             paintbrush.setTextSize(60);
@@ -254,9 +293,11 @@ public class GameEngine extends SurfaceView implements Runnable {
             if(event.getX() < screenWidth/2 && (racketPosition.x  > 0)) //also checking if racket position reaches corner
             {
                 racketPosition.x -= RACKET_SPEED;
+
             }else if (event.getX() > screenWidth/2 && (racketPosition.x+RACKET_WIDTH*2) < screenWidth)
             {
                 racketPosition.x += RACKET_SPEED;
+
             }
         }
         else if (userAction == MotionEvent.ACTION_UP) {
