@@ -58,7 +58,7 @@ public class GameEngine extends SurfaceView implements Runnable {
     // ----------------------------
     // ## GAME STATS - number of lives, score, etc
     // ----------------------------
-
+    int score = 0; //counting score
 
     public GameEngine(Context context, int w, int h) {
         super(context);
@@ -156,10 +156,12 @@ public class GameEngine extends SurfaceView implements Runnable {
         //code to detect when ball reaches the screen bottom or top to stop ball from going down further
             if(ballPosition.y > screenHeight){ //ball reaches bottom of screen
                 ballMovingDown = false;  //change the boolean
+                score +=1; //increase score when ball touches bottom
             }
             else if(ballPosition.y < 0) //ball reaches top of screen
             {
                 ballMovingDown = true; //change boolean
+                score += 1; //increase score when ball touches top
             }
 
     }
@@ -189,7 +191,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
             //@TODO: Draw game statistics (lives, score, etc)
             paintbrush.setTextSize(60);
-            canvas.drawText("Score: 25", 20, 100, paintbrush);
+            canvas.drawText("Score: " + this.score,20,20,paintbrush);
 
             //----------------
             this.holder.unlockCanvasAndPost(canvas);
