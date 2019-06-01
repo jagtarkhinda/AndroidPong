@@ -53,8 +53,12 @@ public class GameEngine extends SurfaceView implements Runnable {
     // ## SPRITES
     // ----------------------------
     Point ballPosition; // point represents the (x,y) position of an item (ball)
+    Point racketPosition; // racket (x,y) position
     final int BALL_WIDTH = 45;
     final int BALL_SPEED = 50;
+    final int RACKET_WIDTH = 100;
+    final int RACKET_HEIGHT = 25;
+    final int DISTANCE_FROM_WALL = 300;
     // ----------------------------
     // ## GAME STATS - number of lives, score, etc
     // ----------------------------
@@ -73,10 +77,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
         this.printScreenInfo();
 
-        //setting the initial position of ball to center of screen
-        ballPosition = new Point();  //initializing the ballPosition point
-        ballPosition.x = screenWidth/2;
-        ballPosition.y = screenHeight/2;
+
 
 
 
@@ -84,6 +85,16 @@ public class GameEngine extends SurfaceView implements Runnable {
         // This is optional. Use it to:
         //  - setup or configure your sprites
         //  - set the initial position of your sprites
+
+        //setting the initial position of ball to center of screen
+        ballPosition = new Point();  //initializing the ballPosition point
+        ballPosition.x = screenWidth/2;
+        ballPosition.y = screenHeight/2;
+
+        //setting the initial position of racket to bottom center
+        racketPosition = new Point();
+        racketPosition.x = (screenWidth/2 - RACKET_WIDTH);
+        racketPosition.y = (screenHeight - (DISTANCE_FROM_WALL + RACKET_HEIGHT));
 
 
         // @TODO: Any other game setup stuff goes here
@@ -144,10 +155,10 @@ public class GameEngine extends SurfaceView implements Runnable {
             //code to make the ball move top top or bottom depending on boolean variable
             if(ballMovingDown == true)
             {
-                ballPosition.y += 50; // moving ball 50px every frame
+                ballPosition.y += BALL_SPEED; // moving ball 50px every frame
             }
             else {
-                ballPosition.y -=50;
+                ballPosition.y -= BALL_SPEED;
             }
 
 
@@ -181,7 +192,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
             //@TODO: Draw the sprites (rectangle, circle, etc)
 
-            //Drawing a ball as rectangle. We need 4 coordinates to draw the rectangle.
+            //Drawing a ball as rectangle. We need 4 coordinates.
             int left = ballPosition.x;
             int top = ballPosition.y;
             int right = ballPosition.x + BALL_WIDTH;  // ball is 45 px in width
@@ -189,9 +200,17 @@ public class GameEngine extends SurfaceView implements Runnable {
 
             canvas.drawRect(left,top,right,bottom,paintbrush);
 
+            //Drawing a racket as rectangle. We need 4 coordinates.
+            int racleft = racketPosition.x;
+            int ractop = racketPosition.y;
+            int racright = racleft + RACKET_WIDTH*2;
+            int racbottom = ractop + RACKET_HEIGHT*2;
+
+            canvas.drawRect(racleft,ractop,racright,racbottom,paintbrush);
+
             //@TODO: Draw game statistics (lives, score, etc)
             paintbrush.setTextSize(60);
-            canvas.drawText("Score: " + this.score,20,20,paintbrush);
+            canvas.drawText("Score: " + this.score,20,100,paintbrush);
 
             //----------------
             this.holder.unlockCanvasAndPost(canvas);
